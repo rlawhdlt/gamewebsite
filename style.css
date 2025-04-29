@@ -1,0 +1,67 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #222;
+  }
+  
+  #gameArea {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(#333, #111);
+    overflow: hidden;
+  }
+  
+  #player {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: url('images/player.png') no-repeat center/cover;
+  }
+  
+  .zombie {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: url('images/zombie.png') no-repeat center/cover;
+  }
+  
+  .attack {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: yellow;
+    border-radius: 50%;
+  }
+  
+  #gameOverScreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    font-size: 48px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 40px;
+    border-radius: 20px;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  #restartBtn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
