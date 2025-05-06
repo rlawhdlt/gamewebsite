@@ -1,67 +1,228 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body, html {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #222;
-  }
-  
-  #gameArea {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    background: radial-gradient(#333, #111);
-    overflow: hidden;
-  }
-  
-  #player {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: url('images/player.png') no-repeat center/cover;
-  }
-  
-  .zombie {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: url('images/zombie.png') no-repeat center/cover;
-  }
-  
-  .attack {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: yellow;
-    border-radius: 50%;
-  }
-  
-  #gameOverScreen {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: white;
-    font-size: 48px;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 40px;
-    border-radius: 20px;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
-  #restartBtn {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 24px;
-    cursor: pointer;
-  }
-  
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* 기본 설정 */
+body {
+  margin: 0;
+  background: #111;
+  font-family: 'Press Start 2P', cursive;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 공통 구조 */
+.arcade-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.arcade-cabinet {
+  background: #222;
+  border: 12px solid #0f0f0f;
+  border-radius: 20px;
+  box-shadow: inset 0 0 10px #0ff, 0 0 60px #0ff;
+  width: 1100px;
+  height: 900px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
+}
+
+/* 타이틀 */
+.arcade-title {
+  color: #0ff;
+  font-size: 18px;
+  text-shadow: 0 0 5px #0ff;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* 화면 프레임 */
+.arcade-screen {
+  width: 90%;
+  height: 550px;
+  background: black;
+  border: 6px solid cyan;
+  box-shadow: 0 0 10px cyan;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* 메뉴/설명 등 콘텐츠 */
+.menu-content,
+.character-content,
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  color: white;
+}
+
+/* 버튼 */
+.arcade-start-button {
+  background: linear-gradient(to bottom, #ff4444, #cc0000);
+  border: 3px solid #fff;
+  padding: 10px 24px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: 'Press Start 2P', cursive;
+}
+
+/* 캐릭터 선택 */
+.character-select {
+  display: flex;
+  gap: 30px;
+  margin: 20px 0;
+}
+.character-select img {
+  width: 100px;
+  cursor: pointer;
+  border: 4px solid #fff;
+  border-radius: 10px;
+  transition: transform 0.2s;
+}
+.character-select img:hover {
+  transform: scale(1.1);
+}
+
+/* 게임 캔버스 */
+#gameCanvas {
+  border: 6px inset cyan;
+  box-shadow: 0 0 15px cyan;
+  background: #000;
+}
+
+/* UI */
+#gameUI {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #000;
+  padding: 6px 12px;
+  border: 3px solid #fff;
+  border-radius: 8px;
+  font-size: 12px;
+  color: white;
+  z-index: 10;
+}
+
+/* 모달 */
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
+.modal-content {
+  background: #1e1e1e;
+  color: white;
+  padding: 20px;
+  border: 3px solid #fff;
+  border-radius: 8px;
+  width: 320px;
+  text-align: center;
+}
+
+/* 컨트롤러 가로 정렬 */
+.controller-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  margin-top: 20px;
+}
+
+/* 조이스틱 왼쪽 */
+.joystick-left {
+  width: 18px;
+  height: 80px;
+  background: linear-gradient(to bottom, #444, #111);
+  position: relative;
+}
+.joystick-left::after {
+  content: '';
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle at 30% 30%, red, darkred);
+  border-radius: 50%;
+  position: absolute;
+  top: -30px;
+  left: -11px;
+  box-shadow: 0 0 5px red;
+}
+
+/* 버튼 오른쪽 */
+.buttons-right {
+  display: flex;
+  gap: 15px;
+}
+.button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  box-shadow: inset -2px -2px 4px rgba(255,255,255,0.3), 0 4px 0 #555;
+}
+.button.red {
+  background: radial-gradient(circle at 30% 30%, #ff4d4d, #b30000);
+}
+.button.yellow {
+  background: radial-gradient(circle at 30% 30%, #ffff66, #cc9900);
+}
+.button.green {
+  background: radial-gradient(circle at 30% 30%, #66ff66, #009900);
+}
+
+/* 동전 슬롯 */
+.coin-slot {
+  width: 50px;
+  height: 80px;
+  background: linear-gradient(to bottom, #aaa, #666);
+  border: 2px solid #444;
+  border-radius: 8px;
+  margin-top: 20px;
+  position: relative;
+  box-shadow: inset 0 0 4px #000;
+}
+.coin-slot::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 30px;
+  background: #222;
+  border-radius: 3px;
+}
+
+.modal-content button {
+  background: linear-gradient(to bottom, #ff4444, #cc0000);
+  border: 3px solid #fff;
+  color: #fff;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 12px;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #ff4444;
+  transition: all 0.2s ease-in-out;
+}
+
+.modal-content button:hover {
+  background: #ff6666;
+  box-shadow: 0 0 15px #ff4444, 0 0 5px #fff;
+  transform: scale(1.05);
+}
