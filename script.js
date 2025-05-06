@@ -1,193 +1,187 @@
-const player = document.getElementById('player');
-const gameArea = document.getElementById('gameArea');
-const gameOverScreen = document.getElementById('gameOverScreen');
-const restartBtn = document.getElementById('restartBtn');
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+let gameStarted = false;
 
-let zombies = [];
-let attacks = [];
+let player = { x: 400, y: 300, speed: 2.5, size: 20 };
+let keys = {};
+let enemies = [];
+let round = 1;
+let roundTime = 0;
+let maxTime = [90, 60, 30];
+let spawnInterval, roundTimer;
+let remainingTime = maxTime[0];
+let gameOver = false;
 
-let playerX = window.innerWidth / 2;
-let playerY = window.innerHeight / 2;
-let speed = 5;
-
-let moveDirection = null;
-let playerHP = 10;
-let gameOver = false; // ➔ 추가: 게임 오버 상태 확인용
-
-// 키 입력
-document.addEventListener('keydown', (e) => {
-  if (gameOver) return; // 게임 오버 시 키 입력 무시
-  const key = e.key.toLowerCase();
-  if (['w', 'a', 's', 'd'].includes(key)) {
-    moveDirection = key;
-  }
+window.addEventListener("keydown", e => {
+  if (gameStarted) keys[e.key.toLowerCase()] = true;
 });
-
-document.addEventListener('keyup', (e) => {
-  if (gameOver) return; // 게임 오버 시 키 입력 무시
-  const key = e.key.toLowerCase();
-  if (moveDirection === key) {
-    moveDirection = null;
-  }
+window.addEventListener("keyup", e => {
+  if (gameStarted) keys[e.key.toLowerCase()] = false;
 });
-
-restartBtn.addEventListener('click', () => {
-  location.reload();
-});
-
-// 메인 루프
-setInterval(gameLoop, 16);
-setInterval(spawnZombie, 2000);
-setInterval(autoAttack, 500); // 0.5초마다 자동 공격
-
-function gameLoop() {
-  if (gameOver) return; // 게임 오버 시 멈춤
-
-  movePlayer();
-  moveZombies();
-  moveAttacks();
-  checkCollisions();
-}
 
 function movePlayer() {
-  if (gameOver) return;
+  let dx = 0, dy = 0;
+  if (keys['w']) dy -= 1;
+  if (keys['s']) dy += 1;
+  if (keys['a']) dx -= 1;
+  if (keys['d']) dx += 1;
 
-  if (moveDirection === 'w') playerY -= speed;
-  if (moveDirection === 's') playerY += speed;
-  if (moveDirection === 'a') playerX -= speed;
-  if (moveDirection === 'd') playerX += speed;
+  if (dx !== 0 || dy !== 0) {
+    const len = Math.hypot(dx, dy);
+    player.x += (dx / len) * player.speed;
+    player.y += (dy / len) * player.speed;
+  }
 
-  playerX = Math.max(0, Math.min(window.innerWidth - 40, playerX));
-  playerY = Math.max(0, Math.min(window.innerHeight - 40, playerY));
-
-  updatePlayer();
+  player.x = Math.max(0, Math.min(canvas.width, player.x));
+  player.y = Math.max(0, Math.min(canvas.height, player.y));
 }
 
-function updatePlayer() {
-  player.style.left = playerX + 'px';
-  player.style.top = playerY + 'px';
+function spawnEnemy() {
+  const ex = Math.random() < 0.5 ? 0 : canvas.width;
+  const ey = Math.random() * canvas.height;
+  enemies.push({ x: ex, y: ey, speed: 1 + round * 0.5 });
 }
 
-function fireAttack() {
-  if (gameOver) return;
-
-  const attack = document.createElement('div');
-  attack.classList.add('attack');
-  attack.style.left = playerX + 15 + 'px';
-  attack.style.top = playerY + 15 + 'px';
-  attack.dataset.dir = moveDirection;
-  attack.dataset.distance = 0;
-  gameArea.appendChild(attack);
-  attacks.push(attack);
+function moveEnemies() {
+  enemies.forEach(enemy => {
+    const dx = player.x - enemy.x;
+    const dy = player.y - enemy.y;
+    const dist = Math.hypot(dx, dy);
+    enemy.x += (dx / dist) * enemy.speed;
+    enemy.y += (dy / dist) * enemy.speed;
+  });
 }
 
-function autoAttack() {
-  if (gameOver) return;
-  if (moveDirection) {
-    fireAttack();
+function detectCollision() {
+  for (let enemy of enemies) {
+    const dist = Math.hypot(enemy.x - player.x, enemy.y - player.y);
+    if (dist < player.size) {
+      gameOver = true;
+      clearInterval(spawnInterval);
+      clearInterval(roundTimer);
+    }
   }
 }
 
-function moveAttacks() {
-  if (gameOver) return;
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  attacks.forEach((attack, i) => {
-    let x = parseFloat(attack.style.left);
-    let y = parseFloat(attack.style.top);
-    const dir = attack.dataset.dir;
+  // Draw player
+  ctx.fillStyle = "dodgerblue";
+  ctx.beginPath();
+  ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
+  ctx.fill();
 
-    if (dir === 'w') y -= 10;
-    if (dir === 's') y += 10;
-    if (dir === 'a') x -= 10;
-    if (dir === 'd') x += 10;
-
-    attack.dataset.distance = parseFloat(attack.dataset.distance) + 10;
-
-    attack.style.left = x + 'px';
-    attack.style.top = y + 'px';
-
-    if (parseFloat(attack.dataset.distance) > 300) {
-      attack.remove();
-      attacks.splice(i, 1);
-    }
+  // Draw enemies
+  ctx.fillStyle = "crimson";
+  enemies.forEach(enemy => {
+    ctx.beginPath();
+    ctx.arc(enemy.x, enemy.y, 15, 0, Math.PI * 2);
+    ctx.fill();
   });
+
+  if (gameOver) {
+    ctx.fillStyle = "black";
+    ctx.font = "40px sans-serif";
+    ctx.fillText("GAME OVER", 270, 300);
+  }
 }
 
-function spawnZombie() {
-  if (gameOver) return;
+function gameLoop() {
+  if (!gameStarted || gameOver) return;
 
-  const zombie = document.createElement('div');
-  zombie.classList.add('zombie');
-  zombie.style.left = Math.random() * window.innerWidth + 'px';
-  zombie.style.top = Math.random() * window.innerHeight + 'px';
-  zombie.dataset.hp = 3;
-  gameArea.appendChild(zombie);
-  zombies.push(zombie);
+  movePlayer();
+  moveEnemies();
+  detectCollision();
+  draw();
+
+  requestAnimationFrame(gameLoop);
 }
 
-function moveZombies() {
-  if (gameOver) return;
+function startGame() {
+  document.getElementById("instructionsModal").style.display = "none";
+  gameStarted = true;
 
-  zombies.forEach(zombie => {
-    let zx = parseFloat(zombie.style.left);
-    let zy = parseFloat(zombie.style.top);
+  // 타이머 시작
+  document.getElementById("roundDisplay").textContent = `Round: ${round}`;
+  document.getElementById("timerDisplay").textContent = `Time: ${remainingTime}s`;
 
-    let dx = playerX - zx;
-    let dy = playerY - zy;
-    let distance = Math.sqrt(dx*dx + dy*dy);
-    dx /= distance;
-    dy /= distance;
+  spawnInterval = setInterval(spawnEnemy, 2000 - round * 500);
+  roundTimer = setInterval(() => {
+    if (gameOver) return;
 
-    zx += dx * 1.5;
-    zy += dy * 1.5;
+    remainingTime--;
+    document.getElementById("timerDisplay").textContent = `Time: ${remainingTime}s`;
 
-    zombie.style.left = zx + 'px';
-    zombie.style.top = zy + 'px';
-  });
-}
-
-function checkCollisions() {
-  if (gameOver) return;
-
-  attacks.forEach((attack, ai) => {
-    zombies.forEach((zombie, zi) => {
-      let ax = parseFloat(attack.style.left);
-      let ay = parseFloat(attack.style.top);
-      let zx = parseFloat(zombie.style.left);
-      let zy = parseFloat(zombie.style.top);
-
-      if (Math.abs(ax - zx) < 20 && Math.abs(ay - zy) < 20) {
-        let hp = parseInt(zombie.dataset.hp);
-        hp -= 1;
-        zombie.dataset.hp = hp;
-        attack.remove();
-        attacks.splice(ai, 1);
-
-        if (hp <= 0) {
-          zombie.remove();
-          zombies.splice(zi, 1);
-        }
+    if (remainingTime <= 0) {
+      round++;
+      if (round > 3) {
+        alert("🎉 모든 라운드를 클리어했습니다!");
+        clearInterval(spawnInterval);
+        clearInterval(roundTimer);
+        return;
       }
-    });
-  });
 
-  zombies.forEach((zombie) => {
-    let zx = parseFloat(zombie.style.left);
-    let zy = parseFloat(zombie.style.top);
-
-    if (Math.abs(playerX - zx) < 30 && Math.abs(playerY - zy) < 30) {
-      playerHP -= 1;
-      zombie.remove();
-      zombies = zombies.filter(z => z !== zombie);
-
-      if (playerHP <= 0) {
-        endGame();
-      }
+      remainingTime = maxTime[round - 1];
+      enemies = [];
+      document.getElementById("roundDisplay").textContent = `Round: ${round}`;
+      clearInterval(spawnInterval);
+      spawnInterval = setInterval(spawnEnemy, 2000 - round * 500);
     }
-  });
+  }, 1000);
+
+  gameLoop();
 }
 
-function endGame() {
-  gameOver = true;
-  gameOverScreen.classList.remove('hidden');
+function detectCollision() {
+  for (let enemy of enemies) {
+    const dist = Math.hypot(enemy.x - player.x, enemy.y - player.y);
+    if (dist < player.size) {
+      gameOver = true;
+      clearInterval(spawnInterval);
+      clearInterval(roundTimer);
+      showGameOver();
+    }
+  }
+}
+
+function showGameOver() {
+  document.getElementById("gameOverScreen").style.display = "flex";
+}
+
+function restartGame() {
+  // 변수 초기화
+  player = { x: 512, y: 360, speed: 2.5, size: 20 };
+  enemies = [];
+  keys = {};
+  round = 1;
+  roundTime = 0;
+  remainingTime = maxTime[0];
+  gameOver = false;
+  gameStarted = true;
+
+  document.getElementById("gameOverScreen").style.display = "none";
+  document.getElementById("roundDisplay").textContent = `Round: 1`;
+  document.getElementById("timerDisplay").textContent = `Time: ${remainingTime}s`;
+
+  spawnInterval = setInterval(spawnEnemy, 2000 - round * 500);
+  roundTimer = setInterval(() => {
+    if (!gameOver) {
+      remainingTime--;
+      document.getElementById("timerDisplay").textContent = `Time: ${remainingTime}s`;
+      if (remainingTime <= 0) {
+        nextRound();
+      }
+    }
+  }, 1000);
+
+  gameLoop();
+}
+
+function goToCharacter() {
+  window.location.href = "character.html";
+}
+
+function goToMenu() {
+  window.location.href = "index.html";
 }
