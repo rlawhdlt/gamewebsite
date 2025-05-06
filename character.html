@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Select Character</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="arcade-wrapper">
+    <div class="arcade-cabinet">
+    <div class="arcade-title">ESCAPE PROTOCOL</div>
+      <!-- 동일한 게임 화면 크기 -->
+      <div class="arcade-screen" style="width: 1024px; height: 720px;">
+        <div class="character-content">
+          <h1 class="arcade-title">CHOOSE YOUR CHARACTER</h1>
+          <div class="character-select">
+            <img src="assets/character1.png" onclick="selectCharacter('1')" />
+            <img src="assets/character2.png" onclick="selectCharacter('2')" />
+            <img src="assets/character3.png" onclick="selectCharacter('3')" />
+          </div>
+          <button class="arcade-start-button" onclick="location.href='index.html'">BACK TO MENU</button>
+        </div>
+      </div>
+
+      <!-- 컨트롤러 -->
+      <div class="controller-row">
+        <div class="joystick-left"></div>
+        <div class="buttons-right">
+          <div class="button red"></div>
+          <div class="button yellow"></div>
+          <div class="button green"></div>
+        </div>
+      </div>
+
+      <!-- 동전 슬롯: 오른쪽 하단 -->
+      <div class="coin-slot" style="position: absolute; bottom: 20px; right: 40px;"></div>
+
+    </div>
+  </div>
+
+  <script>
+    function selectCharacter(id) {
+      localStorage.setItem("character", id);
+      location.href = "game.html";
+    }
+  </script>
+</body>
+</html>
