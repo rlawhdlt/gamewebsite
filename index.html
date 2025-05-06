@@ -2,17 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Survival Game Draft</title>
+  <title>Escape Protocol</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="gameArea">
-    <div id="player"></div>
-    <div id="gameOverScreen" class="hidden">
-      <h1>GAME OVER</h1>
-      <button id="restartBtn">Restart</button>
+  <div class="arcade-wrapper">
+    <div class="arcade-cabinet">
+      <div class="arcade-title">ESCAPE PROTOCOL</div>
+      
+      <!-- 게임 스크린 (동일한 크기) -->
+      <div class="arcade-screen" style="width: 1024px; height: 720px;">
+        <div class="menu-content">
+          <h1 class="arcade-title">ESCAPE PROTOCOL</h1>
+          <button class="arcade-start-button" onclick="location.href='character.html'">START GAME</button>
+          <button class="arcade-start-button" onclick="window.open('https://github.com/your-repo')">VIEW GITHUB</button>
+        </div>
+      </div>
+
+      <!-- 컨트롤러: 가로 정렬 -->
+      <div class="controller-row">
+        <div class="joystick-left"></div>
+        <div class="buttons-right">
+          <div class="button red"></div>
+          <div class="button yellow"></div>
+          <div class="button green"></div>
+        </div>
+      </div>
+
+      <!-- 동전 슬롯: 오른쪽 하단 위치 -->
+      <div class="coin-slot" style="position: absolute; bottom: 20px; right: 40px;"></div>
+
     </div>
   </div>
-  <script src="script.js"></script>
 </body>
 </html>
