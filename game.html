@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="arcade-wrapper">
+    <div class="arcade-cabinet">
+    <div class="arcade-title">ESCAPE PROTOCOL</div>
+      <!-- 게임 스크린 (같은 크기) -->
+      <div class="arcade-screen" style="width: 1024px; height: 720px; position: relative;">
+        <!-- 게임 UI 위치 수정 -->
+        <div id="gameUI" style="top: 20px;">
+          <div id="roundDisplay">Round: 1</div>
+          <div id="timerDisplay">Time: 90s</div>
+        </div>
+
+        <!-- 게임 캔버스 -->
+        <canvas id="gameCanvas" width="1024" height="720"></canvas>
+
+        <!-- 설명 팝업 -->
+        <div id="instructionsModal" class="modal" style="display: block;">
+          <div class="modal-content">
+            <h2>How to Play</h2>
+            <p>Use WASD keys to move.</p>
+            <p>Survive all 3 rounds as enemies increase!</p>
+            <button class="arcade-start-button" onclick="startGame()">START</button>
+          </div>
+        </div>
+
+        <!-- 게임오버 팝업 -->
+        <div id="gameOverScreen" class="modal" style="display: none;">
+          <div class="modal-content">
+            <h2>GAME OVER</h2>
+            <button onclick="restartGame()">Retry</button>
+            <button onclick="goToCharacter()">Change Character</button>
+            <button onclick="goToMenu()">Main Menu</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 컨트롤러 -->
+      <div class="controller-row">
+        <div class="joystick-left"></div>
+        <div class="buttons-right">
+          <div class="button red"></div>
+          <div class="button yellow"></div>
+          <div class="button green"></div>
+        </div>
+      </div>
+
+      <!-- 동전 슬롯: 왼쪽 하단 -->
+      <div class="coin-slot" style="position: absolute; bottom: 20px; right: 40px;"></div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
