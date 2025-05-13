@@ -1,34 +1,28 @@
-export function updateUI(mode) {
-    if (mode === "start") {
-      document.getElementById("roundDisplay").textContent = "Round: 1";
-      document.getElementById("timerDisplay").textContent = "Time: 90s";
-    }
-  }
-  
-  export function showGameOver() {
-    document.getElementById("gameOverScreen").style.display = "flex";
-  }
-  
-  export function restartGame() {
-    location.reload();
-  }
-  
-  export function goToMenu() {
-    window.location.href = "index.html";
-  }
-  
-  export function goToCharacter() {
-    window.location.href = "character.html";
-  }
-  
-  export function updateHeartUI(hp) {
-    const container = document.getElementById('hearts');
-    container.innerHTML = '';
-    for (let i = 0; i < hp; i++) {
-      const heart = document.createElement('img');
-      heart.src = 'assets/heart.png';
-      heart.classList.add('heart-icon');
-      container.appendChild(heart);
-    }
-  }
-  
+export function updateUI(state) {
+  const ui = document.getElementById("gameUI");
+  ui.style.display = state === "start" ? "block" : "none";
+}
+
+export function showGameOver() {
+  const gameOverScreen = document.getElementById("gameOverScreen");
+  if (gameOverScreen) gameOverScreen.style.display = "block";
+}
+
+export function restartGame() {
+  window.location.reload();
+}
+
+export function goToMenu() {
+  window.location.href = "index.html";
+}
+
+export function goToCharacter() {
+  window.location.href = "character.html";
+}
+
+export function updateHeartUI(health) {
+  const hearts = document.querySelectorAll("#heartContainer .heart");
+  hearts.forEach((heart, index) => {
+    heart.style.opacity = index < health ? "1" : "0.2";
+  });
+}
