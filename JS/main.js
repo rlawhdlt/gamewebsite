@@ -49,16 +49,12 @@ function gameLoop() {
 }
 
 function startGame() {
-  document.getElementById("instructionsModal").style.display = "none";
+  const modal = document.getElementById("instructionsModal");
+  if (modal) modal.style.display = "none";
   gameStarted = true;
   startTimer();
   gameLoop();
 }
-
-document.getElementById("startBtn").addEventListener("click", startGame);
-window.restartGame = restartGame;
-window.goToMenu = goToMenu;
-window.goToCharacter = goToCharacter;
 
 document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("startBtn");
@@ -68,3 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("startBtn not found in DOM");
   }
 });
+
+// ✅ window에 바인딩할 함수들은 그대로 유지
+window.restartGame = restartGame;
+window.goToMenu = goToMenu;
+window.goToCharacter = goToCharacter;
