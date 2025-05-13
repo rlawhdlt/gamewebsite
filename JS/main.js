@@ -27,6 +27,7 @@ function scaleDifficulty(round) {
   if (round >= 2) enemyTypes.push('predictive');
   if (round >= 3) enemyTypes.push('sync');
 }
+
 function gameLoop() {
   if (!gameStarted) return;
 
@@ -48,20 +49,19 @@ function gameLoop() {
 }
 
 function startGame() {
-    const modal = document.getElementById("instructionsModal");
-    if (modal) modal.style.display = "none"; // 팝업 닫기
-  
-    gameStarted = true;
-    updateUI("start");
-  
-    setInterval(spawnEnemy, 2000);
-    setInterval(spawnPowerUp, 15000);
-    startTimer();
-    gameLoop();
-  }
-  
-window.startGame = startGame;  
+  const modal = document.getElementById("instructionsModal");
+  if (modal) modal.style.display = "none";
+
+  gameStarted = true;
+  updateUI("start");
+
+  setInterval(spawnEnemy, 2000);
+  setInterval(spawnPowerUp, 15000);
+  startTimer();
+  gameLoop();
+}
+
+window.startGame = startGame;
 window.restartGame = restartGame;
 window.goToMenu = goToMenu;
 window.goToCharacter = goToCharacter;
-
