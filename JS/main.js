@@ -1,6 +1,6 @@
 import { player, movePlayer, getFacingDirection, drawPlayer } from './player.js';
 import { enemies, spawnEnemy, moveEnemies, drawEnemies } from './enemies.js';
-import { autoShoot, updateProjectiles, checkProjectileCollision, drawProjectiles } from './projectiles.js';
+import { autoShoot, updateProjectiles, checkProjectileCollision, drawProjectiles, setGameStarted } from './projectiles.js';
 import { spawnPowerUp, drawPowerUps, checkPowerUpCollision } from './powerups.js';
 import { updateUI, showGameOver, restartGame, goToMenu, goToCharacter } from './ui.js';
 
@@ -50,7 +50,9 @@ function gameLoop() {
 function startGame() {
   const modal = document.getElementById("instructionsModal");
   if (modal) modal.style.display = "none";
+
   gameStarted = true;
+  setGameStarted(true); // ✅ 중요: projectile.js에 알려줌
   updateUI("start");
   startTimer();
   gameLoop();
