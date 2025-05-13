@@ -60,7 +60,7 @@ function startGame() {
     gameLoop();
   }
   
-  window.startGame = startGame;  
+window.startGame = startGame;  
 window.restartGame = restartGame;
 window.goToMenu = goToMenu;
 window.goToCharacter = goToCharacter;
