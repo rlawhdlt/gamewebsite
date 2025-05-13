@@ -38,7 +38,32 @@ function startGame() {
     gameLoop();
   }
   
-  window.startGame = startGame;  
+window.startGame = startGame;  
+
+
+
+let round = 1;
+let timeLeft = 30;
+
+function startTimer() {
+  setInterval(() => {
+    timeLeft--;
+    document.getElementById("timerDisplay").textContent = `Time: ${timeLeft}s`;
+
+    if (timeLeft <= 0) {
+      round++;
+      timeLeft = 30;
+      document.getElementById("roundDisplay").textContent = `Round: ${round}`;
+      scaleDifficulty(round);
+    }
+  }, 1000);
+}
+
+function scaleDifficulty(round) {
+  enemies.forEach(e => e.speed += 0.3);
+  if (round >= 2) enemyTypes.push('predictive');
+  if (round >= 3) enemyTypes.push('sync');
+}
 
 window.restartGame = restartGame;
 window.goToMenu = goToMenu;
