@@ -222,7 +222,7 @@ button:hover,
 .arcade-start-button:hover,
 .modal-content button:hover,
 .button-common:hover {
-  background: #666;
+  background: #ff6666;
   transform: scale(1.05);
-  box-shadow: 0 0 15px #fff, 0 0 5px #ccc;
+  box-shadow: 0 0 15px #ff4444, 0 0 5px #fff;
 }
