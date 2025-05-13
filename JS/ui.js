@@ -21,3 +21,14 @@ export function updateUI(mode) {
     window.location.href = "character.html";
   }
   
+  export function updateHeartUI(hp) {
+    const container = document.getElementById('hearts');
+    container.innerHTML = '';
+    for (let i = 0; i < hp; i++) {
+      const heart = document.createElement('img');
+      heart.src = 'assets/heart.png';
+      heart.classList.add('heart-icon');
+      container.appendChild(heart);
+    }
+  }
+  
