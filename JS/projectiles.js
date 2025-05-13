@@ -3,21 +3,10 @@ import { enemies } from './enemies.js';
 
 let projectiles = [];
 let lastAttackTime = 0;
-const attackCooldown = 500;
+let gameStartedFlag = false;
 
-export function autoShoot() {
-  const now = Date.now();
-  const dir = getFacingDirection();
-  if (dir && now - lastAttackTime > attackCooldown) {
-    projectiles.push({
-      x: player.x,
-      y: player.y,
-      dx: dir.x * 6,
-      dy: dir.y * 6,
-      damage: 1
-    });
-    lastAttackTime = now;
-  }
+export function setGameStarted(val) {
+  gameStartedFlag = val;
 }
 
 export function updateProjectiles() {
@@ -34,6 +23,7 @@ export function checkProjectileCollision() {
       const dist = Math.hypot(projectiles[i].x - enemies[j].x, projectiles[i].y - enemies[j].y);
       if (dist < 20) {
         enemies[j].hp -= projectiles[i].damage;
+        if (enemies[j].hp <= 0) enemies.splice(j, 1);
         projectiles.splice(i, 1);
         break;
       }
@@ -51,25 +41,12 @@ export function drawProjectiles() {
   });
 }
 
-function areaBlast() {
-  for (let angle = 0; angle < 360; angle += 30) {
-    const rad = angle * (Math.PI / 180);
-    projectiles.push({
-      x: player.x,
-      y: player.y,
-      dx: Math.cos(rad) * 5,
-      dy: Math.sin(rad) * 5,
-      damage: 2
-    });
-  }
+export function fireProjectile(x, y, dx, dy) {
+  projectiles.push({
+    x,
+    y,
+    dx: dx * 6,
+    dy: dy * 6,
+    damage: 1
+  });
 }
-
-let gameStartedFlag = false;
-
-export function setGameStarted(val) {
-  gameStartedFlag = val;
-}
-
-setInterval(() => {
-  if (gameStarted) areaBlast();
-}, 3000); // 3초마다 범위 공격
