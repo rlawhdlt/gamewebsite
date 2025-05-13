@@ -1,32 +1,22 @@
-import { player, playerHealth, isInvincible } from './player.js';
+import { player } from './player.js';
 
 export let enemies = [];
 
-function spawnEnemy(type = 'basic') {
+export function spawnEnemy(type = 'basic') {
   const ex = Math.random() < 0.5 ? 0 : 1024;
   const ey = Math.random() * 720;
   enemies.push({
     x: ex, y: ey,
     speed: 1.5,
-    hp: 2,
+    hp: 10,
     type
   });
 }
 
-function moveEnemies() {
+export function moveEnemies() {
   enemies.forEach(enemy => {
-    let dx, dy;
-    if (enemy.type === 'basic') {
-      dx = player.x - enemy.x;
-      dy = player.y - enemy.y;
-    } else if (enemy.type === 'predictive') {
-      dx = (player.x + player.vx * 20) - enemy.x;
-      dy = (player.y + player.vy * 20) - enemy.y;
-    } else if (enemy.type === 'sync') {
-      dx = player.vx;
-      dy = player.vy;
-    }
-
+    let dx = player.x - enemy.x;
+    let dy = player.y - enemy.y;
     const dist = Math.hypot(dx, dy);
     if (dist > 0) {
       enemy.x += (dx / dist) * enemy.speed;
@@ -34,7 +24,6 @@ function moveEnemies() {
     }
   });
 }
-
 
 export function drawEnemies(ctx) {
   ctx.fillStyle = "crimson";
@@ -45,23 +34,21 @@ export function drawEnemies(ctx) {
   });
 }
 
+export function applyRepulsion(enemies) {
+  for (let i = 0; i < enemies.length; i++) {
+    for (let j = i + 1; j < enemies.length; j++) {
+      const dx = enemies[i].x - enemies[j].x;
+      const dy = enemies[i].y - enemies[j].y;
+      const dist = Math.hypot(dx, dy);
+      const minDist = 30;
 
-function checkPlayerHit() {
-  if (isInvincible) return;
-
-  for (let enemy of enemies) {
-    const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
-    if (dist < player.size + 15) {
-      playerHealth--;
-      updateHeartUI(playerHealth);
-      isInvincible = true;
-      flashPlayer(); // 깜빡임 효과
-      if (playerHealth <= 0) {
-        showGameOver();
-      } else {
-        setTimeout(() => isInvincible = false, 1000);
+      if (dist < minDist && dist > 0) {
+        const repel = (minDist - dist) / 2;
+        enemies[i].x += (dx / dist) * repel;
+        enemies[i].y += (dy / dist) * repel;
+        enemies[j].x -= (dx / dist) * repel;
+        enemies[j].y -= (dy / dist) * repel;
       }
-      break;
     }
   }
 }
