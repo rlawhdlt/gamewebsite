@@ -1,5 +1,7 @@
 export let player = { x: 512, y: 360, speed: 2.5, size: 20 };
 let keys = {};
+export let playerHealth = 3;
+export let isInvincible = false;
 
 window.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
 window.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
