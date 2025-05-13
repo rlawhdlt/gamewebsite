@@ -1,4 +1,4 @@
-import { player } from './player.js';
+import { player, playerHealth, isInvincible } from './player.js';
 
 export let enemies = [];
 
@@ -45,7 +45,6 @@ export function drawEnemies(ctx) {
   });
 }
 
-import { player, playerHealth, isInvincible } from './player.js';
 
 function checkPlayerHit() {
   if (isInvincible) return;
