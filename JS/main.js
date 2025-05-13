@@ -35,6 +35,7 @@ function startGame() {
   
     setInterval(spawnEnemy, 2000);
     setInterval(spawnPowerUp, 15000);
+    startTimer();
     gameLoop();
   }
   
