@@ -24,8 +24,7 @@ function startTimer() {
 
 function scaleDifficulty(round) {
   enemies.forEach(e => e.speed += 0.3);
-  if (round >= 2) enemyTypes.push('predictive');
-  if (round >= 3) enemyTypes.push('sync');
+  // define enemyTypes in enemies.js and export it
 }
 
 function gameLoop() {
@@ -52,6 +51,7 @@ function startGame() {
   const modal = document.getElementById("instructionsModal");
   if (modal) modal.style.display = "none";
   gameStarted = true;
+  updateUI("start");
   startTimer();
   gameLoop();
 }
@@ -60,12 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.getElementById("startBtn");
   if (startBtn) {
     startBtn.addEventListener("click", startGame);
-  } else {
-    console.error("startBtn not found in DOM");
   }
 });
 
-// ✅ window에 바인딩할 함수들은 그대로 유지
 window.restartGame = restartGame;
 window.goToMenu = goToMenu;
 window.goToCharacter = goToCharacter;
