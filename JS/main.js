@@ -49,19 +49,13 @@ function gameLoop() {
 }
 
 function startGame() {
-  const modal = document.getElementById("instructionsModal");
-  if (modal) modal.style.display = "none";
-
+  document.getElementById("instructionsModal").style.display = "none";
   gameStarted = true;
-  updateUI("start");
-
-  setInterval(spawnEnemy, 2000);
-  setInterval(spawnPowerUp, 15000);
   startTimer();
   gameLoop();
 }
 
-window.startGame = startGame;
+document.getElementById("startBtn").addEventListener("click", startGame);
 window.restartGame = restartGame;
 window.goToMenu = goToMenu;
 window.goToCharacter = goToCharacter;
