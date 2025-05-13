@@ -226,3 +226,21 @@ body {
   box-shadow: 0 0 15px #ff4444, 0 0 5px #fff;
   transform: scale(1.05);
 }
+
+/* 공통 버튼 스타일 */
+.button-common {
+  background: linear-gradient(to bottom, #444, #111);
+  border: 3px solid #fff;
+  padding: 10px 24px;
+  color: #fff;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.button-common:hover {
+  background: #666;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #fff;
+}
+
