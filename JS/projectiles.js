@@ -64,6 +64,12 @@ function areaBlast() {
   }
 }
 
+let gameStartedFlag = false;
+
+export function setGameStarted(val) {
+  gameStartedFlag = val;
+}
+
 setInterval(() => {
   if (gameStarted) areaBlast();
 }, 3000); // 3초마다 범위 공격
