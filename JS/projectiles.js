@@ -14,7 +14,7 @@ export function autoShoot() {
       y: player.y,
       dx: dir.x * 6,
       dy: dir.y * 6,
-      damage: 20
+      damage: 1
     });
     lastAttackTime = now;
   }
@@ -59,7 +59,7 @@ function areaBlast() {
       y: player.y,
       dx: Math.cos(rad) * 5,
       dy: Math.sin(rad) * 5,
-      damage: 10
+      damage: 2
     });
   }
 }
