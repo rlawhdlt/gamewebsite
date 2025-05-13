@@ -59,3 +59,12 @@ document.getElementById("startBtn").addEventListener("click", startGame);
 window.restartGame = restartGame;
 window.goToMenu = goToMenu;
 window.goToCharacter = goToCharacter;
+
+document.addEventListener("DOMContentLoaded", () => {
+  const startBtn = document.getElementById("startBtn");
+  if (startBtn) {
+    startBtn.addEventListener("click", startGame);
+  } else {
+    console.error("startBtn not found in DOM");
+  }
+});
