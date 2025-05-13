@@ -66,17 +66,6 @@ body {
   color: white;
 }
 
-/* 버튼 */
-.arcade-start-button {
-  background: linear-gradient(to bottom, #ff4444, #cc0000);
-  border: 3px solid #fff;
-  padding: 10px 24px;
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
-  font-family: 'Press Start 2P', cursive;
-}
-
 /* 캐릭터 선택 */
 .character-select {
   display: flex;
@@ -208,39 +197,32 @@ body {
   border-radius: 3px;
 }
 
-.modal-content button {
-  background: linear-gradient(to bottom, #ff4444, #cc0000);
-  border: 3px solid #fff;
-  color: #fff;
-  font-family: 'Press Start 2P', cursive;
-  font-size: 12px;
-  padding: 10px 20px;
-  margin: 10px;
-  cursor: pointer;
-  box-shadow: 0 0 10px #ff4444;
-  transition: all 0.2s ease-in-out;
-}
+/* ===========================
+   🔁 모든 버튼 공통 스타일 통일
+=========================== */
 
-.modal-content button:hover {
-  background: #ff6666;
-  box-shadow: 0 0 15px #ff4444, 0 0 5px #fff;
-  transform: scale(1.05);
-}
-
-/* 공통 버튼 스타일 */
+button,
+.arcade-start-button,
+.modal-content button,
 .button-common {
   background: linear-gradient(to bottom, #444, #111);
   border: 3px solid #fff;
-  padding: 10px 24px;
   color: #fff;
   font-family: 'Press Start 2P', cursive;
   font-size: 14px;
+  padding: 10px 20px;
+  margin: 10px;
   cursor: pointer;
-  transition: 0.3s;
+  box-shadow: 0 0 10px #888;
+  transition: all 0.3s ease-in-out;
+  text-align: center;
 }
+
+button:hover,
+.arcade-start-button:hover,
+.modal-content button:hover,
 .button-common:hover {
   background: #666;
   transform: scale(1.05);
-  box-shadow: 0 0 10px #fff;
+  box-shadow: 0 0 15px #fff, 0 0 5px #ccc;
 }
-
