@@ -50,3 +50,20 @@ export function drawProjectiles() {
     ctx.fill();
   });
 }
+
+function areaBlast() {
+  for (let angle = 0; angle < 360; angle += 30) {
+    const rad = angle * (Math.PI / 180);
+    projectiles.push({
+      x: player.x,
+      y: player.y,
+      dx: Math.cos(rad) * 5,
+      dy: Math.sin(rad) * 5,
+      damage: 10
+    });
+  }
+}
+
+setInterval(() => {
+  if (gameStarted) areaBlast();
+}, 3000); // 3초마다 범위 공격
