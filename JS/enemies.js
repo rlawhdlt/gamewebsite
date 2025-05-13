@@ -8,7 +8,7 @@ function spawnEnemy(type = 'basic') {
   enemies.push({
     x: ex, y: ey,
     speed: 1.5,
-    hp: 100,
+    hp: 2,
     type
   });
 }
