@@ -11,15 +11,27 @@ export function setDeathCallback(callback) {
   onDeath = callback;
 }
 
+const attackSound = new Audio("sounds/attack.mp3");
+
 window.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
 window.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
 
+let enhancedDamage = false;
+
+export function isEnhancedDamage() {
+  return enhancedDamage;
+}
+
+export function setEnhancedDamage(val) {
+  enhancedDamage = val;
+}
+
 export function movePlayer() {
   let dx = 0, dy = 0;
-  if (keys['w']) dy -= 1;
-  if (keys['s']) dy += 1;
-  if (keys['a']) dx -= 1;
-  if (keys['d']) dx += 1;
+  if (keys['w']) { dy -= 1; direction = "up"; }
+  if (keys['s']) { dy += 1; direction = "down"; }
+  if (keys['a']) { dx -= 1; direction = "left"; }
+  if (keys['d']) { dx += 1; direction = "right"; }
 
   if (dx !== 0 || dy !== 0) {
     const len = Math.hypot(dx, dy);
@@ -45,11 +57,24 @@ export function getFacingDirection() {
 }
 
 export function drawPlayer(ctx) {
-  ctx.fillStyle = isInvincible ? "rgba(30, 144, 255, 0.5)" : "dodgerblue"; // 깜빡임 효과
-  ctx.beginPath();
-  ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
-  ctx.fill();
+  let glowColor = isInvincible ? "rgba(255,0,0,0.4)" : "dodgerblue"; // 피격 시 빨강
+  const img = images[direction];
+
+  if (img?.complete) {
+    ctx.save();
+    if (isInvincible) {
+      ctx.filter = "brightness(1.4) drop-shadow(0 0 8px red)";
+    }
+    ctx.drawImage(img, player.x - player.size, player.y - player.size, player.size * 2, player.size * 2);
+    ctx.restore();
+  } else {
+    ctx.fillStyle = glowColor;
+    ctx.beginPath();
+    ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
+
 
 export function checkPlayerHit() {
   if (isInvincible) return;
@@ -61,9 +86,13 @@ export function checkPlayerHit() {
       updateHeartUI(playerHealth);
       isInvincible = true;
 
+      // 화면 테두리 효과
+      document.body.classList.add("red-flash");
+      setTimeout(() => document.body.classList.remove("red-flash"), 300);
+
       if (playerHealth <= 0) {
         showGameOver();
-        if (onDeath) onDeath(); // ✅ endGame 함수 호출
+        if (onDeath) onDeath();
         return;
       }
 
@@ -104,7 +133,11 @@ function shootInDirection(key) {
   dir.y /= len;
 
   // emit projectile (delegated to projectiles.js)
-  if (shootCallback) shootCallback(player.x, player.y, dir.x, dir.y);
+  if (shootCallback) {
+    shootCallback(player.x, player.y, dir.x, dir.y);
+    attackSound.currentTime = 0;
+    attackSound.play();
+  }
 
   shootCooldown = true;
   setTimeout(() => shootCooldown = false, 300); // 300ms 쿨타임
@@ -113,4 +146,31 @@ function shootInDirection(key) {
 let shootCallback = null;
 export function setShootCallback(callback) {
   shootCallback = callback;
+}
+
+let characterId = localStorage.getItem("character") || "cow"; // 'cow', 'sheep', 'pig', 'human'
+let direction = "down";
+let images = {};
+
+
+function loadCharacterImages(id) {
+  const directionToSuffix = {
+    up: "back",
+    down: "front",
+    left: "left",
+    right: "right"
+  };
+
+  for (let dir in directionToSuffix) {
+    const img = new Image();
+    img.src = `images/characters/${id}/${id}_${directionToSuffix[dir]}.png`;
+    images[dir] = img;
+  }
+}
+
+loadCharacterImages(characterId);
+
+export function updatePlayerHealth(value) {
+  playerHealth = Math.min(3, value);
+  updateHeartUI(playerHealth);
 }
