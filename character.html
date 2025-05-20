@@ -14,9 +14,9 @@
         <div class="character-content">
           <h1 class="arcade-title">CHOOSE YOUR CHARACTER</h1>
           <div class="character-select">
-            <img src="assets/character1.png" onclick="selectCharacter('1')" />
-            <img src="assets/character2.png" onclick="selectCharacter('2')" />
-            <img src="assets/character3.png" onclick="selectCharacter('3')" />
+            <img src="images/characters/cow/cow_front.png" onclick="selectCharacter('cow')" />
+            <img src="images/characters/sheep/sheep_front.png" onclick="selectCharacter('sheep')" />
+            <img src="images/characters/pig/pig_front.png" onclick="selectCharacter('pig')" />
           </div>
           <button class="arcade-start-button" onclick="location.href='index.html'">BACK TO MENU</button>
         </div>
@@ -37,8 +37,10 @@
 
     </div>
   </div>
-
+  
+  <script src="JS/click-sound.js"></script>
   <script>
+   
     function selectCharacter(id) {
       localStorage.setItem("character", id);
       location.href = "game.html";
