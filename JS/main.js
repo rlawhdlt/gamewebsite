@@ -1,4 +1,4 @@
-import { player, movePlayer, getFacingDirection, drawPlayer, checkPlayerHit, setDeathCallback, setShootCallback  } from './player.js';
+import { player, movePlayer, getFacingDirection, drawPlayer, checkPlayerHit, setDeathCallback, setShootCallback } from './player.js';
 import { enemies, spawnEnemy, moveEnemies, drawEnemies, applyRepulsion } from './enemies.js';
 import { updateProjectiles, checkProjectileCollision, drawProjectiles, setGameStarted, fireProjectile } from './projectiles.js';
 import { spawnPowerUp, drawPowerUps, checkPowerUpCollision } from './powerups.js';
@@ -12,7 +12,7 @@ let timerIntervalId = null;
 
 setShootCallback(fireProjectile);
 
-const bgm = new Audio("assets/bgm.mp3");
+const bgm = new Audio("sounds/bgm.mp3");
 bgm.loop = true;
 bgm.volume = 0.3;
 
@@ -46,9 +46,9 @@ function resizeCanvas() {
 }
 
 function getTimeForRound(round) {
-  if (round === 1) return 90;
-  if (round === 2) return 60;
-  return 30;
+  if (round === 1) return 30;
+  if (round === 2) return 40;
+  return 60;
 }
 
 function startTimer() {
@@ -96,6 +96,7 @@ function startGame() {
   gameStarted = true;
   setGameStarted(true);
   updateUI("start");
+  bgm.play();
   setDeathCallback(endGame); // ✅ 여기서 endGame 연결
   setInterval(spawnPowerUp, 15000);
   for (let i = 0; i < 3; i++) spawnEnemy();
