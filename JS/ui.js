@@ -3,9 +3,15 @@ export function updateUI(state) {
   ui.style.display = state === "start" ? "block" : "none";
 }
 
+const gameOverSound = new Audio("sounds/gameover.mp3");
+
 export function showGameOver() {
   const gameOverScreen = document.getElementById("gameOverScreen");
-  if (gameOverScreen) gameOverScreen.style.display = "block";
+  if (gameOverScreen) {
+    gameOverScreen.style.display = "block";
+    gameOverSound.currentTime = 0;
+    gameOverSound.play();
+  }
 }
 
 export function restartGame() {
@@ -23,6 +29,13 @@ export function goToCharacter() {
 export function updateHeartUI(health) {
   const hearts = document.querySelectorAll("#heartContainer .heart");
   hearts.forEach((heart, index) => {
-    heart.style.opacity = index < health ? "1" : "0.2";
+    if (index < health) {
+      heart.style.opacity = "1";
+      heart.classList.remove("heart-glow");
+      setTimeout(() => heart.classList.add("heart-glow"), 50); // 깜빡임 재적용
+    } else {
+      heart.style.opacity = "0.2";
+      heart.classList.remove("heart-glow");
+    }
   });
 }
