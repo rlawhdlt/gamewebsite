@@ -36,13 +36,13 @@ export function drawProjectiles() {
   const ctx = document.getElementById("gameCanvas").getContext("2d");
   projectiles.forEach(proj => {
     if (proj.type === "star") {
-      ctx.fillStyle = "gold";
+      ctx.fillStyle = "yellow";
       ctx.beginPath();
-      ctx.moveTo(proj.x, proj.y - 5);
-      ctx.lineTo(proj.x + 2, proj.y + 5);
-      ctx.lineTo(proj.x - 5, proj.y -1);
-      ctx.lineTo(proj.x + 5, proj.y -1);
-      ctx.lineTo(proj.x - 2, proj.y + 5);
+      ctx.moveTo(proj.x, proj.y - 20);          // top spike
+      ctx.lineTo(proj.x + 8, proj.y + 20);      // bottom right
+      ctx.lineTo(proj.x - 20, proj.y - 4);      // left
+      ctx.lineTo(proj.x + 20, proj.y - 4);      // right
+      ctx.lineTo(proj.x - 8, proj.y + 20);      // bottom left
       ctx.closePath();
       ctx.fill();
     } else {

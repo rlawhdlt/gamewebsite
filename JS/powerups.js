@@ -1,9 +1,17 @@
 import { player,playerHealth, updatePlayerHealth, setEnhancedDamage } from './player.js';
 
+const powerupImages = {
+  speed: new Image(),
+  damage: new Image(),
+  heal: new Image(),
+};
 
+powerupImages.speed.src = "images/powerup-speed.png";
+powerupImages.damage.src = "images/powerup-damage.png";
+powerupImages.heal.src = "images/powerup-greenheal.png";
 
 let powerUps = [];
-const powerupSound = new Audio("sounds/powerup.mp3");
+const powerupSound = new Audio("sounds/powerup");
 
 export function spawnPowerUp() {
   const types = ["speed", "damage", "heal"];
@@ -19,8 +27,8 @@ export function checkPowerUpCollision() {
     if (dist < 25) {
       applyPowerUp(p.type);
       showPowerUpScene(p.type);
-      powerupSound.currentTime = 0;
-      powerupSound.play();
+      const audio = new Audio('sounds/powerup.mp3');  // 🔈 사운드 재생
+      audio.play();
       return false;
     }
     return true;
@@ -46,10 +54,10 @@ export function applyPowerUp(type) {
 export function drawPowerUps() {
   const ctx = document.getElementById("gameCanvas").getContext("2d");
   powerUps.forEach(p => {
-    ctx.fillStyle = p.type === "speed" ? "lime" : p.type === "damage" ? "red" : "aqua";
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, 10, 0, Math.PI * 2);
-    ctx.fill();
+    const img = powerupImages[p.type];
+    if (img && img.complete) {
+      ctx.drawImage(img, p.x - 16, p.y - 16, 50, 50); // 중앙 정렬
+    }
   });
 }
 

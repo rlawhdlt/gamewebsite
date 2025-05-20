@@ -2,30 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Escape Protocol</title>
+  <title>BARN TO FIGHT</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="arcade-wrapper">
     <div class="arcade-cabinet">
-      <div class="arcade-title">ESCAPE PROTOCOL</div>
+      <div class="arcade-title">BARN TO FIGHT</div>
       
       <!-- 게임 스크린 (동일한 크기) -->
       <div class="arcade-screen" style="width: 1024px; height: 720px;">
         <div class="menu-content">
-          <h1 class="arcade-title">ESCAPE PROTOCOL</h1>
-          <button class="arcade-start-button" onclick="location.href='character.html'">START GAME</button>
-          <button class="arcade-start-button" onclick="window.open('https://github.com/your-repo')">VIEW GITHUB</button>
+          <h1 class="arcade-title">BARN TO FIGHT</h1>
+          <button data-href="character.html">Game Start</button>
+          <button class="arcade-start-button" onclick="window.open('https://github.com/your-repo')">View Github</button>
         </div>
       </div>
 
       <!-- 컨트롤러: 가로 정렬 -->
       <div class="controller-row">
-        <div class="joystick-left"></div>
+        <!-- 조이스틱 이미지를 div 대신 img로 -->
+        <div class="joystick-left">
+          <img id="joystick" src="images/joystick.png" alt="joystick" />
+        </div>
+      
+        <!-- 버튼 이미지로 교체 -->
         <div class="buttons-right">
-          <div class="button red"></div>
-          <div class="button yellow"></div>
-          <div class="button green"></div>
+          <img class="button-img" src="images/button-a.png" alt="Button A" />
+          <img class="button-img" src="images/button-b.png" alt="Button B" />
         </div>
       </div>
 
@@ -35,7 +39,9 @@
     </div>
   </div>
 
+  <script type="module" src="JS/main.js"></script>
   <script src="JS/click-sound.js"></script>
+
 
 </body>
 </html>

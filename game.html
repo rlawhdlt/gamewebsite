@@ -8,7 +8,8 @@
 <body>
   <div class="arcade-wrapper">
     <div class="arcade-cabinet">
-    <div class="arcade-title">ESCAPE PROTOCOL</div>
+    <div class="arcade-title">BARN TO FIGHT</div>
+    <button id="toggleSound" class="sound-toggle">🔊</button>
       <!-- 게임 스크린 (같은 크기) -->
       <div class="arcade-screen" style="width: 1024px; height: 720px; position: relative;">
         <!-- 게임 UI 위치 수정 -->
@@ -41,7 +42,7 @@
           <div class="modal-content">
             <h2>GAME OVER</h2>
             <button onclick="restartGame()">Retry</button>
-            <button onclick="goToCharacter()">Change Character</button>
+            <button onclick="goToCharacter()">Change Animal</button>
             <button onclick="goToMenu()">Main Menu</button>
           </div>
         </div>
@@ -49,11 +50,15 @@
 
       <!-- 컨트롤러 -->
       <div class="controller-row">
-        <div class="joystick-left"></div>
+        <!-- 조이스틱 이미지를 div 대신 img로 -->
+        <div class="joystick-left">
+          <img id="joystick" src="images/joystick.png" alt="joystick" />
+        </div>
+      
+        <!-- 버튼 이미지로 교체 -->
         <div class="buttons-right">
-          <div class="button red"></div>
-          <div class="button yellow"></div>
-          <div class="button green"></div>
+          <img class="button-img" src="images/button-a.png" alt="Button A" />
+          <img class="button-img" src="images/button-b.png" alt="Button B" />
         </div>
       </div>
 

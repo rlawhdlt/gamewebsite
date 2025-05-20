@@ -88,8 +88,10 @@ body {
 #gameCanvas {
   border: 6px inset cyan;
   box-shadow: 0 0 15px cyan;
-  background: #000;
+  background: url("images/background.jpg") no-repeat center center;
+  background-size: cover;
 }
+
 
 /* UI */
 #gameUI {
@@ -128,36 +130,72 @@ body {
 /* 컨트롤러 가로 정렬 */
 .controller-row {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 60px;
-  margin-top: 20px;
-}
-
-/* 조이스틱 왼쪽 */
-.joystick-left {
-  width: 18px;
-  height: 80px;
-  background: linear-gradient(to bottom, #444, #111);
-  position: relative;
-}
-.joystick-left::after {
-  content: '';
-  width: 40px;
-  height: 40px;
-  background: radial-gradient(circle at 30% 30%, red, darkred);
-  border-radius: 50%;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 20px 120px; /* ✅ 기존보다 더 중앙 쪽으로 밀어 넣기 */
   position: absolute;
-  top: -30px;
-  left: -11px;
-  box-shadow: 0 0 5px red;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
+  z-index: 20;
 }
 
-/* 버튼 오른쪽 */
-.buttons-right {
-  display: flex;
-  gap: 15px;
+/* ✅ 사운드 토글 버튼: 스크린 오른쪽 상단 */
+.sound-toggle {
+  position: absolute;
+  top: 40px;
+  right: 35px;
+  background: linear-gradient(to bottom, #ff4444, #cc0000);
+  color: white;
+  cursor: pointer;
+  z-index: 50;
+  border: 3px solid #fff;
+  color: #fff;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 14px;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #888;
+  transition: all 0.3s ease-in-out;
+  text-align: center;
 }
+
+/* ✅ 조이스틱: 왼쪽 아래지만 더 안쪽으로 */
+.joystick-left {
+  position: absolute;
+  bottom: 30px;
+  left: 80px; /* 기존보다 안쪽으로 */
+  z-index: 20;
+  border: none !important;
+}
+.joystick-left img {
+  width: 80px;
+  height: auto;
+  image-rendering: pixelated;
+  border: none !important;
+}
+
+/* ✅ 버튼: 오른쪽 아래지만 더 안쪽으로 */
+.buttons-right {
+  position: absolute;
+  bottom: 30px;
+  right: 80px; /* 기존보다 안쪽으로 */
+  display: flex;
+  gap: 16px;
+  z-index: 20;
+}
+.buttons-right img {
+  width: 64px;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+
 .button {
   width: 40px;
   height: 40px;
@@ -290,6 +328,7 @@ button:hover,
   box-shadow: 0 0 30px cyan, 0 0 60px rgba(0,255,255,0.3);
   animation: pulse-glow 3s infinite alternate;
 }
+
 
 @keyframes pulse-glow {
   0% { box-shadow: 0 0 15px cyan; }

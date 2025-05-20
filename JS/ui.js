@@ -4,6 +4,8 @@ export function updateUI(state) {
 }
 
 const gameOverSound = new Audio("sounds/gameover.mp3");
+const clickSound = new Audio("sounds/click.mp3");
+clickSound.volume = 1.0;
 
 export function showGameOver() {
   const gameOverScreen = document.getElementById("gameOverScreen");
@@ -15,15 +17,27 @@ export function showGameOver() {
 }
 
 export function restartGame() {
-  window.location.reload();
+  clickSound.currentTime = 0;
+  clickSound.play().catch(() => {});
+  setTimeout(() => {
+    window.location.reload();
+  }, 200);
 }
 
 export function goToMenu() {
-  window.location.href = "index.html";
+  clickSound.currentTime = 0;
+  clickSound.play().catch(() => {});
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 200);
 }
 
 export function goToCharacter() {
-  window.location.href = "character.html";
+  clickSound.currentTime = 0;
+  clickSound.play().catch(() => {});
+  setTimeout(() => {
+    window.location.href = "character.html";
+  }, 200);
 }
 
 export function updateHeartUI(health) {
