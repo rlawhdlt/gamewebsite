@@ -1,3 +1,6 @@
+import { score } from './score.js';
+
+
 export let player = { x: 512, y: 360, speed: 2.5, size: 20 };
 let keys = {};
 export let playerHealth = 3;
