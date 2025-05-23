@@ -9,37 +9,35 @@
   <div class="arcade-wrapper">
     <div class="arcade-cabinet">
       <div class="arcade-title">BARN TO FIGHT</div>
-      
+
       <!-- 게임 스크린 (동일한 크기) -->
       <div class="arcade-screen" style="width: 1024px; height: 720px;">
         <div class="menu-content">
           <h1 class="arcade-title">BARN TO FIGHT</h1>
-          <button data-href="character.html">Game Start</button>
-          <button class="arcade-start-button" onclick="window.open('https:https://github.com/rlawhdlt/gamewebsite.git')">View Github</button>
+          <button class="arcade-start-button" data-href="character.html">Game Start</button>
+          <button class="arcade-start-button" onclick="window.open('https://github.com/rlawhdlt/gamewebsite.git')">View Github</button>
         </div>
       </div>
 
       <!-- 컨트롤러: 가로 정렬 -->
       <div class="controller-row">
-        <!-- 조이스틱 이미지를 div 대신 img로 -->
+        <!-- 조이스틱 이미지 -->
         <div class="joystick-left">
           <img id="joystick" src="images/joystick.png" alt="joystick" />
         </div>
-      
-        <!-- 버튼 이미지로 교체 -->
+
+        <!-- 버튼과 코인 슬롯 -->
         <div class="buttons-right">
           <img class="button-img" src="images/button-a.png" alt="Button A" />
           <img class="button-img" src="images/button-b.png" alt="Button B" />
+          <div class="coin-slot"></div>
         </div>
       </div>
-
-      <!-- 동전 슬롯: 오른쪽 하단 위치 -->
-      <div class="coin-slot" style="position: absolute; bottom: 20px; right: 40px;"></div>
 
     </div>
   </div>
 
-  <script type="module" src="JS/main.js"></script>
+  
   <script src="JS/click-sound.js"></script>
 
 
