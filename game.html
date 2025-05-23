@@ -8,11 +8,12 @@
 <body>
   <div class="arcade-wrapper">
     <div class="arcade-cabinet">
-    <div class="arcade-title">BARN TO FIGHT</div>
-    <button id="toggleSound" class="sound-toggle">🔊</button>
-      <!-- 게임 스크린 (같은 크기) -->
+      <div class="arcade-title">BARN TO FIGHT</div>
+      <button id="toggleSound" class="sound-toggle">🔊</button>
+
+      <!-- 게임 스크린 -->
       <div class="arcade-screen" style="width: 1024px; height: 720px; position: relative;">
-        <!-- 게임 UI 위치 수정 -->
+        <!-- 게임 UI -->
         <div id="gameUI" style="top: 20px;">
           <div id="roundDisplay">Round: 1</div>
           <div id="timerDisplay">Time: 90s</div>
@@ -22,7 +23,7 @@
           <img src="images/heart.png" class="heart" />
           <img src="images/heart.png" class="heart" />
         </div>
-        
+
         <!-- 게임 캔버스 -->
         <canvas id="gameCanvas" width="1024" height="720"></canvas>
 
@@ -37,40 +38,44 @@
           </div>
         </div>
 
-        <!-- 게임오버 팝업 -->
+        <!-- 라운드 배너 -->
+        <div id="roundBanner" class="round-banner"></div>
+
+        <!-- 게임 오버 화면 -->
         <div id="gameOverScreen" class="modal" style="display: none;">
           <div class="modal-content">
             <h2>GAME OVER</h2>
-            <button onclick="restartGame()">Retry</button>
-            <button onclick="goToCharacter()">Change Animal</button>
-            <button onclick="goToMenu()">Main Menu</button>
+            <div id="finalStats">
+              <p style="color: #2b1c13;">Enemies Defeated: <span id="statEnemies">0</span></p>
+              <p style="color: #2b1c13;">Damage Dealt: <span id="statDamage">0</span></p>
+              <p style="color: #2b1c13;">Hits Taken: <span id="statHits">0</span></p>
+              <p style="color: #2b1c13;">High Score: <span id="statHighScore">0</span></p>
+            </div>
+            <div id="gameOverButtons" style="display: flex;">
+              <button class="arcade-start-button" onclick="restartGame()">Retry</button>
+              <button class="arcade-start-button" onclick="goToCharacter()">Change Animal</button>
+              <button class="arcade-start-button" onclick="goToMenu()">Main Menu</button>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- 컨트롤러 -->
+      <!-- 컨트롤러 (arcade-cabinet 안, arcade-screen 밖) -->
       <div class="controller-row">
-        <!-- 조이스틱 이미지를 div 대신 img로 -->
         <div class="joystick-left">
           <img id="joystick" src="images/joystick.png" alt="joystick" />
         </div>
-      
-        <!-- 버튼 이미지로 교체 -->
         <div class="buttons-right">
           <img class="button-img" src="images/button-a.png" alt="Button A" />
           <img class="button-img" src="images/button-b.png" alt="Button B" />
+          <div class="coin-slot"></div>
         </div>
       </div>
-
-      <!-- 동전 슬롯: 왼쪽 하단 -->
-      <div class="coin-slot" style="position: absolute; bottom: 20px; right: 40px;"></div>
 
     </div>
   </div>
 
-  <!-- 모듈 사용 시 반드시 type="module" -->
-<script type="module" src="JS/main.js"></script>
-<script src="JS/click-sound.js"></script>
-
+  <script type="module" src="JS/main.js"></script>
+  <script src="JS/click-sound.js"></script>
 </body>
 </html>
