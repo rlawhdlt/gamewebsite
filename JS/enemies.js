@@ -51,8 +51,8 @@ export function drawEnemies(ctx) {
   enemies.forEach(enemy => {
     const img = enemyImages[enemy.direction];
     const size = 40;
-    const isFlashing = enemy.hitFlashTimer && enemy.hitFlashTimer > Date.now();
 
+    const isFlashing = enemy.hitFlashTimer && enemy.hitFlashTimer > Date.now();
     ctx.globalAlpha = enemy.hp === 1 ? 0.5 : 1;
 
     if (img.complete) {
