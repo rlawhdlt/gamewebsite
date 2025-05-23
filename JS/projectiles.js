@@ -1,5 +1,6 @@
 import { player, getFacingDirection, isEnhancedDamage } from './player.js';
 import { enemies } from './enemies.js';
+import { score } from './score.js';
 
 let projectiles = [];
 let lastAttackTime = 0;
@@ -18,18 +19,37 @@ export function updateProjectiles() {
 }
 
 export function checkProjectileCollision() {
-  for (let i = projectiles.length - 1; i >= 0; i--) {
-    for (let j = enemies.length - 1; j >= 0; j--) {
-      const dist = Math.hypot(projectiles[i].x - enemies[j].x, projectiles[i].y - enemies[j].y);
-      if (dist < 20) {
-        enemies[j].hp -= projectiles[i].damage;
-        enemies[j].hitFlashTimer = Date.now() + 150; // 150ms 동안 깜빡임
-        if (enemies[j].hp <= 0) enemies.splice(j, 1);
-        projectiles.splice(i, 1);
+  projectiles = projectiles.filter((projectile) => {
+    let hit = false;
+
+    for (let i = 0; i < enemies.length; i++) {
+      const enemy = enemies[i];
+      const dx = projectile.x - enemy.x;
+      const dy = projectile.y - enemy.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < 30) {
+        if (enemy.health === undefined) enemy.health = 2; // ✅ 체력 2로 설정
+        enemy.health -= projectile.damage;
+        enemy.hitTimer = 10; // ✅ 맞으면 효과 시간 지정
+      
+        score.totalDamageDealt += projectile.damage;
+      
+        if (enemy.health <= 0) {
+          enemies.splice(i, 1);
+          score.totalEnemiesDefeated++;
+        }
+        if (enemy.hp === undefined) enemy.hp = 2;
+          enemy.hp -= projectile.damage;
+          enemy.hitFlashTimer = Date.now() + 300; // 300ms 동안 반짝임 효과
+      
+        hit = true;
         break;
       }
     }
-  }
+
+    return !hit; // 충돌한 projectile은 제거
+  });
 }
 
 export function drawProjectiles() {
