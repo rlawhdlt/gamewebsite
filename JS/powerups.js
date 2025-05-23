@@ -11,7 +11,7 @@ powerupImages.damage.src = "images/powerup-damage.png";
 powerupImages.heal.src = "images/powerup-greenheal.png";
 
 let powerUps = [];
-const powerupSound = new Audio("sounds/powerup");
+const powerupSound = new Audio("sounds/powerup.mp3");
 
 export function spawnPowerUp() {
   const types = ["speed", "damage", "heal"];
