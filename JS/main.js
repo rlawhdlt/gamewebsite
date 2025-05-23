@@ -2,8 +2,13 @@ import { player, movePlayer, getFacingDirection, drawPlayer, checkPlayerHit, set
 import { enemies, spawnEnemy, moveEnemies, drawEnemies, applyRepulsion } from './enemies.js';
 import { updateProjectiles, checkProjectileCollision, drawProjectiles, setGameStarted, fireProjectile } from './projectiles.js';
 import { spawnPowerUp, drawPowerUps, checkPowerUpCollision } from './powerups.js';
-import { updateUI, showGameOver, restartGame, goToMenu, goToCharacter } from './ui.js';
+import { updateUI, showGameOver, showGameOverSummary, restartGame, goToMenu, goToCharacter } from './ui.js';
 
+
+export let totalEnemiesDefeated = 0;
+export let totalDamageDealt = 0;
+export let totalHitsTaken = 0;
+export let highScore = 0;
 
 let gameStarted = false;
 let round = 1;
@@ -36,6 +41,7 @@ export function endGame() {
   if (enemySpawnIntervalId) clearInterval(enemySpawnIntervalId);
   if (timerIntervalId) clearInterval(timerIntervalId);
   bgm.pause(); // 🔇
+  showGameOverSummary();
 }
 
 function resizeCanvas() {
@@ -61,11 +67,20 @@ function startTimer() {
 
     if (timeLeft <= 0) {
       round++;
-      timeLeft = getTimeForRound(round);
-      document.getElementById("roundDisplay").textContent = `Round: ${round}`;
-      setupEnemySpawn(round); // 라운드별 적 속도/수 조정
+      showRoundBanner(round, () => {
+        timeLeft = getTimeForRound(round);
+        document.getElementById("roundDisplay").textContent = `Round: ${round}`;
+        setupEnemySpawn(round);
+      });
     }
   }, 1000);
+}
+
+function startNextRound() {
+  currentRound++;
+  showRoundBanner(currentRound, () => {
+    startRound(); // 적 스폰, 타이머 등 라운드 실제 시작
+  });
 }
 
 function gameLoop() {
@@ -104,6 +119,40 @@ function startGame() {
   startTimer();
   gameLoop();
 }
+
+function showRoundBanner(roundNumber, callback) {
+  const banner = document.getElementById('roundBanner');
+  banner.textContent = `Round ${roundNumber}`;
+
+  // ⛔ 타이머 및 적 스폰 정지
+  clearInterval(timerIntervalId);
+  clearInterval(enemySpawnIntervalId);
+
+  // 🧹 이전 적 즉시 제거
+  enemies.length = 0;
+  const ctx = document.getElementById("gameCanvas").getContext("2d");
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+  // 🎬 애니메이션 표시
+  banner.classList.remove('show');
+  void banner.offsetWidth;
+  banner.classList.add('show');
+
+  // ✅ 3초 후 라운드 시작
+  setTimeout(() => {
+    banner.classList.remove('show');
+
+    timeLeft = getTimeForRound(roundNumber);
+    document.getElementById("roundDisplay").textContent = `Round: ${roundNumber}`;
+    document.getElementById("timerDisplay").textContent = `Time: ${timeLeft}s`;
+
+    setupEnemySpawn(roundNumber);
+    startTimer();
+
+    if (callback) callback();
+  }, 3000); // 정확히 3초로 통합됨
+}
+
 
 
 let enemySpawnIntervalId = null;
