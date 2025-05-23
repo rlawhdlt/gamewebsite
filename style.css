@@ -3,15 +3,87 @@
 /* 기본 설정 */
 body {
   margin: 0;
-  background: #111;
+  background: url("images/pixel-bg.png") no-repeat center center fixed;
+  background-size: cover;
+  image-rendering: pixelated;
   font-family: 'Press Start 2P', cursive;
   height: 100vh;
+  width: 100vw;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+/* 라운드 텍스트 배너 */
+.round-banner {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  color: white;
+  text-shadow: 0 0 10px black;
+  z-index: 999;
+}
 
-/* 공통 구조 */
+/* How to Play 팝업 */
+#instructionsModal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.modal-content {
+  background: #ffe3b3;
+  border: 3px solid #6a4e3c;
+  padding: 24px 20px;
+  font-size: 14px;
+  color: #2b1c13 !important;
+  text-align: center;
+  width: 360px;
+  max-width: 90%;
+  box-shadow: 4px 4px 0 #a68c73;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-shadow: none;
+}
+
+
+/* 사운드 버튼 */
+#toggleSound {
+  position: absolute;
+  top: 50px;
+  right: 54px;
+  background: #ffcc33; /* 노란색 배경 */
+  border: 3px solid #6a4e3c;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  z-index: 25;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #2b1c13; /* 어두운 글자색 */
+  cursor: pointer;
+  box-shadow: 0 0 6px #a68c73, inset 2px 2px 0 white;
+  transition: transform 0.2s ease-in-out;
+}
+
+#toggleSound:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px #6a4e3c;
+}
+
+/* 구조 */
 .arcade-wrapper {
   display: flex;
   justify-content: center;
@@ -20,43 +92,49 @@ body {
 }
 
 .arcade-cabinet {
-  background: #222;
-  border: 12px solid #0f0f0f;
-  border-radius: 20px;
-  box-shadow: inset 0 0 10px #0ff, 0 0 60px #0ff;
+  position: relative;
+  height: 900px;
+  overflow: hidden;
+  background: #ff7c24;
+  border: 12px solid #e34c00;
+  box-shadow: inset 0 0 0 4px #ff9933, 0 0 20px #ffcc00;
+  border-radius: 12px;
+  padding: 20px;
   width: 1100px;
   height: 900px;
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 10px;
+  justify-content: flex-start;
+  position: relative;
+  image-rendering: pixelated;
 }
 
-
-/* 타이틀 */
 .arcade-title {
-  color: #0ff;
+  color: var(--ui-text);
   font-size: 18px;
-  text-shadow: 0 0 5px #0ff;
   margin-bottom: 10px;
   text-align: center;
+  text-shadow: 1px 1px white;
 }
 
-/* 화면 프레임 */
 .arcade-screen {
+  background: radial-gradient(circle, #222 0%, #000 100%);
+  border: 8px solid #222;
+  box-shadow: inset 0 0 30px #000;
   width: 90%;
-  height: 550px;
-  background: black;
-  border: 6px solid cyan;
-  box-shadow: 0 0 10px cyan;
+  height: 720px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
+  font-family: 'Press Start 2P', cursive;
+  color: yellow;
+  font-size: 32px;
+  text-shadow: none;
 }
 
-/* 메뉴/설명 등 콘텐츠 */
+
 .menu-content,
 .character-content,
 .modal-content {
@@ -67,7 +145,6 @@ body {
   color: white;
 }
 
-/* 캐릭터 선택 */
 .character-select {
   display: flex;
   gap: 30px;
@@ -76,39 +153,81 @@ body {
 .character-select img {
   width: 100px;
   cursor: pointer;
-  border: 4px solid #fff;
+  border: 4px solid #6a4e3c;
+  background: #ffe3b3;
   border-radius: 10px;
+  box-shadow: 3px 3px 0 #a68c73;
   transition: transform 0.2s;
 }
 .character-select img:hover {
   transform: scale(1.1);
 }
 
-/* 게임 캔버스 */
+.controller-buttons {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.controller-buttons .button {
+  width: 40px;
+  height: 40px;
+  background: #ff0;
+  border: 3px solid #333;
+  box-shadow: inset -2px -2px 0 #fff;
+  image-rendering: pixelated;
+}
+
+.button.red { background: #f00; }
+.button.green { background: #0f0; }
+.button.yellow { background: #ff0; }
+
 #gameCanvas {
-  border: 6px inset cyan;
-  box-shadow: 0 0 15px cyan;
+  border: 6px inset #ff9933;         /* 주황 테두리 */
+  box-shadow: 0 0 15px #ffcc00;      /* 노란빛 그림자 */
   background: url("images/background.jpg") no-repeat center center;
   background-size: cover;
+  width: 100%;
+  height: auto;
+  max-width: 100vw;
+  max-height: 100vh;
+  object-fit: contain;
+}
+
+#finalStats {
+  margin-top: 12px;
+  color: #2b1c13; /* 검은색 텍스트 */
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.8;
+}
+
+#gameOverScreen .modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
 
-/* UI */
 #gameUI {
   position: absolute;
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  background: #000;
+  background: #ffe3b3;
   padding: 6px 12px;
-  border: 3px solid #fff;
+  border: 3px solid #6a4e3c;
   border-radius: 8px;
   font-size: 12px;
-  color: white;
+  color: #2b1c13; /* 어두운 색상으로 가독성 확보 */
   z-index: 10;
+  box-shadow: 4px 4px 0 #a68c73;
 }
 
-/* 모달 */
 .modal {
   position: absolute;
   top: 50%;
@@ -117,62 +236,32 @@ body {
   z-index: 100;
 }
 
-.modal-content {
-  background: #1e1e1e;
-  color: white;
-  padding: 20px;
-  border: 3px solid #fff;
-  border-radius: 8px;
-  width: 320px;
-  text-align: center;
-}
 
-/* 컨트롤러 가로 정렬 */
 .controller-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  width: 100%;
-  max-width: 1024px;
-  margin: 0 auto;
-  padding: 20px 120px; /* ✅ 기존보다 더 중앙 쪽으로 밀어 넣기 */
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 20px 120px;
   box-sizing: border-box;
   z-index: 20;
 }
 
-/* ✅ 사운드 토글 버튼: 스크린 오른쪽 상단 */
-.sound-toggle {
-  position: absolute;
-  top: 40px;
-  right: 35px;
-  background: linear-gradient(to bottom, #ff4444, #cc0000);
-  color: white;
-  cursor: pointer;
-  z-index: 50;
-  border: 3px solid #fff;
-  color: #fff;
-  font-family: 'Press Start 2P', cursive;
-  font-size: 14px;
-  padding: 10px 20px;
-  margin: 10px;
-  cursor: pointer;
-  box-shadow: 0 0 10px #888;
-  transition: all 0.3s ease-in-out;
-  text-align: center;
-}
-
-/* ✅ 조이스틱: 왼쪽 아래지만 더 안쪽으로 */
-.joystick-left {
+.joystick {
   position: absolute;
   bottom: 30px;
-  left: 80px; /* 기존보다 안쪽으로 */
-  z-index: 20;
-  border: none !important;
+  left: 60px;
+  width: 40px;
+  height: 40px;
+  background: #d00;
+  border-radius: 50%;
+  border: 3px solid #333;
+  box-shadow: inset -2px -2px 0 #fff;
 }
+
 .joystick-left img {
   width: 80px;
   height: auto;
@@ -180,11 +269,10 @@ body {
   border: none !important;
 }
 
-/* ✅ 버튼: 오른쪽 아래지만 더 안쪽으로 */
 .buttons-right {
   position: absolute;
   bottom: 30px;
-  right: 80px; /* 기존보다 안쪽으로 */
+  right: 80px;
   display: flex;
   gap: 16px;
   z-index: 20;
@@ -194,7 +282,6 @@ body {
   height: auto;
   image-rendering: pixelated;
 }
-
 
 .button {
   width: 40px;
@@ -213,16 +300,15 @@ body {
   background: radial-gradient(circle at 30% 30%, #66ff66, #009900);
 }
 
-/* 동전 슬롯 */
 .coin-slot {
   width: 50px;
   height: 80px;
   background: linear-gradient(to bottom, #aaa, #666);
   border: 2px solid #444;
   border-radius: 8px;
-  margin-top: 20px;
-  position: relative;
   box-shadow: inset 0 0 4px #000;
+  position: relative; /* absolute 제거 */
+  margin-left: 16px;
 }
 .coin-slot::after {
   content: '';
@@ -236,10 +322,7 @@ body {
   border-radius: 3px;
 }
 
-/* ===========================
-   🔁 모든 버튼 공통 스타일 통일
-=========================== */
-
+/* 공통 버튼 */
 button,
 .arcade-start-button,
 .modal-content button,
@@ -266,6 +349,7 @@ button:hover,
   box-shadow: 0 0 15px #ff4444, 0 0 5px #fff;
 }
 
+/* 기타 UI */
 #heartContainer {
   position: absolute;
   bottom: 20px;
@@ -274,7 +358,6 @@ button:hover,
   gap: 8px;
   z-index: 20;
 }
-
 .heart {
   width: 30px;
   height: 30px;
@@ -282,13 +365,7 @@ button:hover,
   transition: opacity 0.2s;
 }
 
-#gameCanvas {
-  width: 100%;
-  height: auto;
-  max-width: 100vw;
-  max-height: 100vh;
-  object-fit: contain;
-}
+
 
 .joystick-left.pressed-up { transform: translateY(-5px); }
 .joystick-left.pressed-down { transform: translateY(5px); }
@@ -309,30 +386,44 @@ button:hover,
   animation: glowHeart 1s ease-in-out;
 }
 
-.arcade-screen,
-.joystick-left,
-.button {
-  border-width: 6px;
-  border-style: solid;
+.round-banner {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  font-family: 'Press Start 2P', cursive;
+  background: #ffe3b3;
+  border: 3px solid #6a4e3c;
+  padding: 24px 32px;
+  color: #2b1c13;
+  text-align: center;
+  z-index: 999;
+  border-radius: 10px;
+  box-shadow: 4px 4px 0 #a68c73;
+  opacity: 0;
+  pointer-events: none;
 }
 
-.arcade-screen,
-.joystick-left,
-.button,
-.buttons-right {
-  image-rendering: pixelated;
-  font-family: 'Press Start 2P', monospace;
+.round-banner.show {
+  animation: fade-in-out 2s ease-out forwards;
 }
 
-.arcade-screen {
-  box-shadow: 0 0 30px cyan, 0 0 60px rgba(0,255,255,0.3);
-  animation: pulse-glow 3s infinite alternate;
+@keyframes fade-in-out {
+  0% { opacity: 0; transform: translate(-50%, -60%); }
+  25% { opacity: 1; transform: translate(-50%, -50%); }
+  75% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -40%); }
 }
 
 
 @keyframes pulse-glow {
-  0% { box-shadow: 0 0 15px cyan; }
-  100% { box-shadow: 0 0 40px cyan, 0 0 80px rgba(0,255,255,0.6); }
+  0% {
+    box-shadow: 0 0 15px #ff9900;
+  }
+  100% {
+    box-shadow: 0 0 40px #ff9900, 0 0 80px rgba(255, 204, 0, 0.6);
+  }
 }
 
 @keyframes glowHeart {
@@ -341,13 +432,7 @@ button:hover,
   100% { filter: brightness(1); }
 }
 
-@keyframes glowHeart {
-  0% { filter: brightness(1); }
-  50% { filter: brightness(2.5); }
-  100% { filter: brightness(1); }
-}
-
-/* 📱 모바일용 (세로 기준 768px 이하) */
+/* 모바일 대응 */
 @media (max-width: 768px) {
   .arcade-cabinet {
     width: 95vw;
@@ -377,9 +462,8 @@ button:hover,
   }
 
   #toggleSound {
-    position: absolute;
-    top: 5px;
-    right: 10px;
+    top: 20px;
+    right: 20px;
     font-size: 14px;
   }
 }
